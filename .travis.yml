@@ -15,13 +15,14 @@ install:
   - npm ci # faster, goes only from package-lock
 before_script:
   - psql -c 'create database "deployment-exercise-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
-
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE
+before_deploy: # omit node_modules, since we set skip_cleanup below
+  - rm -rf node_modules
+deploy: # see README for details on these keys
+  # prevents travis from deleting the build
+  skip_cleanup: true
+  provider: heroku
+  # app should be your heroku app name; see README
+  app: deploy-app-ja
+  # the secure key indicates an encrypted value; see README
+  api_key:
+    secure: uI4Qm6uSrqQO3qf9wgKa0vP0ssoeYdLak6BXzlPxL+n+4KCCcgwciwVhTy2BRDrUfqwj6GqyffcsqOch2BsQFMR1OwEyBf1SnrvOJVtgtv4qhTb671gc5Ik63gMhjX66poBuc83/DAUV6GuYAUMCEbXr6lsPHc7QfHmhU9Yy4gWlhmRfg0XgQfwAhRRXq8yIDQW/YEI8oXzA0ad78U1iawo/Xu0QkJOPjZFeCQT2+pO7e652/yVFKCtoEKA7j4QR7pJuDMuYbNcGN3p7RLNlKrdd8bZzYLQxxf5zEZD/VH3WmnpnInwg60OfqYtHYdsYELEq76mBP3iKmbYmVAMa3YVKCfLgMx2qHZSDj1koRqKnuY41hM7AhtCcS046NyS5Ca5KbEsDUmaw7IMiREGQyyUCCMc0pXvjiajAsEyPJifKQ3HlHczh478W+81L5CzqPsV3SPT2uWQKskpZSRwgKOitIbIv9peTK90OjysOJ2WXLUBqCId91VhvW+L4+n6OgUFqJxaauDbxlfYND9ezqKJSLg0F8tcO2JUXGI+ytoEmJmManXKzr3rwjgxJST7xgbVrTUxKOR4eQ3XkW++9yuZKGI5g69yi+8cObDPGxwF5H446Ojq+F2j6ZwAnJ4srPGkf1t4VGxe+uFohHvVlGQsnUwDbvHtVJV58z/qsBXc=
